@@ -9,6 +9,9 @@ Describe Vim.Validate
     let sf = s:S.sfuncs(s:P.realpath(
           \ 'autoload/vital/__latest__/Vim/Validate.vim'
           \))
+    call Validate.set_config({
+          \ 'prefix': 'vital: Vim.Validate: ',
+          \})
   End
 
   Describe s:_translate({text}, {table})
@@ -35,6 +38,10 @@ Describe Vim.Validate
   Describe .throw({msg})
     It throw 'vital: Vim.Validate: ValidationError: {msg}'
       Throw /^vital: Vim.Validate: ValidationError: foo$/ Validate.throw('foo')
+    End
+    It throw 'foobar:ValidationError: {msg}' if config.prefix is 'foobar:'
+      call Validate.set_config({'prefix': 'foobar:'})
+      Throw /^foobar:ValidationError: foo$/ Validate.throw('foo')
     End
   End
 
